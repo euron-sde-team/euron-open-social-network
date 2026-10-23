@@ -54,7 +54,8 @@ export function decideModeration(scores: Record<string, number>, thresholds: Thr
  *   - user reports corroborate the classifier (raise priority, or REVIEW -> HIDE)
  *   - brand-new accounts get less benefit of the doubt than established members
  *
- * TODO(maintainer): decide these trade-offs. See the request in the build notes.
+ * Today only the first rule is applied. Deployments that want the others add them here;
+ * the function is pure, so tests/unit can pin any policy you choose.
  */
 export function adjustForContext(verdict: Verdict, ctx: ModerationContext): Verdict {
   if (ctx.authorIsStaff && verdict.outcome === "HIDE") return { ...verdict, outcome: "REVIEW" };
