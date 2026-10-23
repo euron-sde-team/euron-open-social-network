@@ -142,7 +142,8 @@ uses `rules` instead and logs a warning once per process (`effectiveProvider`).
 `adjustForContext` then applies context. Today it does one thing: content by platform
 staff (`ADMIN` or `MODERATOR`) is downgraded from `HIDE` to `REVIEW`. The scan already
 passes `reportCount`, `authorReputation` and `authorAccountAgeDays`, but nothing uses them;
-the function carries a `TODO(maintainer)` for those trade-offs.
+they are the extension point for deployments that want report corroboration or
+stricter handling of new accounts.
 
 | Verdict | `moderation_state` | Case | Item |
 | --- | --- | --- | --- |
