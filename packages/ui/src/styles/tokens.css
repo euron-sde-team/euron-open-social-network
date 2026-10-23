@@ -1,0 +1,141 @@
+/*
+ * Design tokens. Colours are HSL triplets so Tailwind can apply alpha
+ * (`bg-primary/10`). Light is the default; dark applies when the OS prefers it
+ * (unless the person picked light) or when they picked dark explicitly.
+ * The app sets `data-theme` on <html> to "light" or "dark" for a manual choice.
+ */
+:root {
+  --background: 220 20% 97%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --muted: 220 16% 94%;
+  --muted-foreground: 215 19% 35%;
+  --subtle-foreground: 215 16% 45%;
+  --border: 220 14% 89%;
+  --input: 220 13% 82%;
+  --ring: 223 70% 49%;
+  --primary: 223 70% 49%;
+  --primary-foreground: 0 0% 100%;
+  --primary-soft: 223 85% 96%;
+  --primary-soft-foreground: 223 72% 38%;
+  --link: 223 72% 42%;
+  --success: 152 64% 30%;
+  --success-foreground: 0 0% 100%;
+  --success-soft: 150 55% 94%;
+  --success-soft-foreground: 152 70% 24%;
+  --warning: 30 90% 32%;
+  --warning-foreground: 0 0% 100%;
+  --warning-soft: 40 95% 92%;
+  --warning-soft-foreground: 30 90% 28%;
+  --danger: 0 72% 45%;
+  --danger-foreground: 0 0% 100%;
+  --danger-soft: 0 85% 96%;
+  --danger-soft-foreground: 0 72% 38%;
+  --online: 145 63% 40%;
+  --overlay: 222 47% 6%;
+  --reaction-love: 347 77% 50%;
+  --reaction-warm: 38 92% 42%;
+  --reaction-angry: 18 85% 46%;
+
+  --radius: 12px;
+  --shadow-card: 0 1px 2px hsl(222 47% 11% / 0.06), 0 0 0 1px hsl(222 47% 11% / 0.02);
+  --shadow-popover: 0 10px 30px -8px hsl(222 47% 11% / 0.18), 0 2px 6px hsl(222 47% 11% / 0.08);
+  --header-height: 56px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: 222 28% 8%;
+    --foreground: 210 30% 96%;
+    --card: 222 24% 12%;
+    --card-foreground: 210 30% 96%;
+    --popover: 222 22% 15%;
+    --popover-foreground: 210 30% 96%;
+    --muted: 222 18% 19%;
+    --muted-foreground: 215 20% 74%;
+    --subtle-foreground: 215 14% 62%;
+    --border: 222 16% 22%;
+    --input: 222 14% 30%;
+    --ring: 222 90% 68%;
+    --primary: 222 68% 53%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 222 40% 20%;
+    --primary-soft-foreground: 222 90% 80%;
+    --link: 222 90% 74%;
+    --success: 152 55% 36%;
+    --success-foreground: 0 0% 100%;
+    --success-soft: 152 35% 16%;
+    --success-soft-foreground: 150 55% 70%;
+    --warning: 32 85% 38%;
+    --warning-foreground: 0 0% 100%;
+    --warning-soft: 35 45% 16%;
+    --warning-soft-foreground: 40 90% 70%;
+    --danger: 0 65% 50%;
+    --danger-foreground: 0 0% 100%;
+    --danger-soft: 0 40% 17%;
+    --danger-soft-foreground: 0 85% 78%;
+    --online: 145 60% 48%;
+    --overlay: 222 47% 3%;
+    --reaction-love: 347 80% 62%;
+    --reaction-warm: 40 92% 58%;
+    --reaction-angry: 18 88% 60%;
+    --shadow-card: 0 1px 2px hsl(0 0% 0% / 0.3), 0 0 0 1px hsl(0 0% 100% / 0.02);
+    --shadow-popover: 0 12px 32px -8px hsl(0 0% 0% / 0.6), 0 2px 6px hsl(0 0% 0% / 0.3);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --background: 222 28% 8%;
+  --foreground: 210 30% 96%;
+  --card: 222 24% 12%;
+  --card-foreground: 210 30% 96%;
+  --popover: 222 22% 15%;
+  --popover-foreground: 210 30% 96%;
+  --muted: 222 18% 19%;
+  --muted-foreground: 215 20% 74%;
+  --subtle-foreground: 215 14% 62%;
+  --border: 222 16% 22%;
+  --input: 222 14% 30%;
+  --ring: 222 90% 68%;
+  --primary: 222 68% 53%;
+  --primary-foreground: 0 0% 100%;
+  --primary-soft: 222 40% 20%;
+  --primary-soft-foreground: 222 90% 80%;
+  --link: 222 90% 74%;
+  --success: 152 55% 36%;
+  --success-foreground: 0 0% 100%;
+  --success-soft: 152 35% 16%;
+  --success-soft-foreground: 150 55% 70%;
+  --warning: 32 85% 38%;
+  --warning-foreground: 0 0% 100%;
+  --warning-soft: 35 45% 16%;
+  --warning-soft-foreground: 40 90% 70%;
+  --danger: 0 65% 50%;
+  --danger-foreground: 0 0% 100%;
+  --danger-soft: 0 40% 17%;
+  --danger-soft-foreground: 0 85% 78%;
+  --online: 145 60% 48%;
+  --overlay: 222 47% 3%;
+  --reaction-love: 347 80% 62%;
+  --reaction-warm: 40 92% 58%;
+  --reaction-angry: 18 88% 60%;
+  --shadow-card: 0 1px 2px hsl(0 0% 0% / 0.3), 0 0 0 1px hsl(0 0% 100% / 0.02);
+  --shadow-popover: 0 12px 32px -8px hsl(0 0% 0% / 0.6), 0 2px 6px hsl(0 0% 0% / 0.3);
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

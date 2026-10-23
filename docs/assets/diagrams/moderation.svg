@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="620" viewBox="0 0 1280 620" role="img" aria-labelledby="t d">
+  <title id="t">Moderation pipeline</title>
+  <desc id="d">New or edited content is published and queued for a scan. A provider returns category scores; thresholds decide clean, review or hide. User reports open or join a case; three reporters hide pending review. Moderators act from the desk; authors can appeal once to a different moderator.</desc>
+  <style>
+    .t { font-family: Inter, -apple-system, Segoe UI, Helvetica, Arial, sans-serif; }
+    .m { font-family: JetBrains Mono, SFMono-Regular, Menlo, monospace; }
+    .h { font-size: 16px; font-weight: 650; fill: #edf1ff; }
+    .s { font-size: 13px; fill: #97a3c2; }
+    .x { font-size: 12px; fill: #6f7b9c; }
+    .box { fill: #111833; stroke: #283258; stroke-width: 1.2; }
+    .hot { fill: #111d3d; stroke: #5b8cff; stroke-opacity: 0.6; stroke-width: 1.4; }
+    .bad { fill: #2a1420; stroke: #f87171; stroke-opacity: 0.55; stroke-width: 1.3; }
+    .ok { fill: #0f2421; stroke: #34d399; stroke-opacity: 0.5; stroke-width: 1.3; }
+    .warn { fill: #2a2312; stroke: #fbbf24; stroke-opacity: 0.55; stroke-width: 1.3; }
+    .arrow { stroke: #4b5778; stroke-width: 1.6; fill: none; marker-end: url(#a); }
+    .arrowhot { stroke: #5b8cff; stroke-opacity: 0.85; stroke-width: 1.6; fill: none; marker-end: url(#ah); }
+    .life { stroke: #283258; stroke-width: 1.2; stroke-dasharray: 4 6; }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4b5778"/></marker>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5b8cff"/></marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity="0.03"/></pattern>
+  </defs>
+  <rect width="1280" height="620" rx="16" fill="#0a0f1c"/>
+  <rect width="1280" height="620" rx="16" fill="url(#grid)"/>
+  <g class="t">
+    <text class="h" x="40" y="52" style="font-size:22px">Moderation: machines triage, people decide</text>
+    <text class="s" x="40" y="76">Every post, comment, question, answer, event, chat and direct message is scanned after it is saved. Nothing is hidden silently.</text>
+
+    <rect class="box" x="40" y="120" width="200" height="88" rx="12"/>
+    <text class="h" x="60" y="154">Content saved</text>
+    <text class="s" x="60" y="178">published at once (or held</text>
+    <text class="s" x="60" y="196">for pre-moderation)</text>
+
+    <rect class="hot" x="300" y="120" width="250" height="88" rx="12"/>
+    <text class="h" x="320" y="154">Scan job (worker)</text>
+    <text class="s" x="320" y="178">text + image thumbnails to</text>
+    <text class="s" x="320" y="196">OpenAI, rules or the stub</text>
+
+    <rect class="box" x="610" y="120" width="260" height="88" rx="12"/>
+    <text class="h" x="630" y="154">decideModeration()</text>
+    <text class="s" x="630" y="178">scores vs per-category</text>
+    <text class="s" x="630" y="196">review / hide thresholds</text>
+
+    <rect class="ok" x="930" y="100" width="310" height="56" rx="12"/>
+    <text class="h" x="950" y="134">Clean: nothing to do</text>
+    <rect class="warn" x="930" y="168" width="310" height="56" rx="12"/>
+    <text class="h" x="950" y="194">Review: stays visible,</text>
+    <text class="s" x="950" y="214">case enters the queue</text>
+    <rect class="bad" x="930" y="236" width="310" height="66" rx="12"/>
+    <text class="h" x="950" y="262">Hide: hidden now, case opens,</text>
+    <text class="s" x="950" y="284">author told why and may appeal</text>
+
+    <path class="arrow" d="M240 164 H296"/>
+    <path class="arrowhot" d="M550 164 H606"/>
+    <path class="arrow" d="M870 150 C900 150 900 128 926 128"/>
+    <path class="arrow" d="M870 164 C900 164 900 196 926 196"/>
+    <path class="arrow" d="M870 178 C900 178 900 268 926 268"/>
+
+    <rect class="box" x="40" y="300" width="250" height="108" rx="12"/>
+    <text class="h" x="60" y="334">Member reports</text>
+    <text class="s" x="60" y="358">reason + details, once each;</text>
+    <text class="s" x="60" y="378">3 established reporters</text>
+    <text class="s" x="60" y="396">hide pending review</text>
+
+    <rect class="hot" x="360" y="330" width="420" height="140" rx="12"/>
+    <text class="h" x="380" y="364">Moderation desk</text>
+    <text class="s" x="380" y="388">one open case per item, ranked by priority</text>
+    <text class="s" x="380" y="410">Community moderators: approve, hide, remove,</text>
+    <text class="s" x="380" y="430">restore, dismiss in their communities</text>
+    <text class="s" x="380" y="452">Staff: also warn, suspend, ban</text>
+
+    <rect class="box" x="850" y="350" width="390" height="100" rx="12"/>
+    <text class="h" x="870" y="384">Appeal (once per case)</text>
+    <text class="s" x="870" y="408">decided by a different moderator;</text>
+    <text class="s" x="870" y="428">overturning restores the content</text>
+
+    <path class="arrow" d="M290 380 C320 380 330 400 356 400"/>
+    <path class="arrow" d="M1085 302 C1085 330 600 300 570 326"/>
+    <path class="arrow" d="M780 400 H846"/>
+
+    <text class="x" x="40" y="528">Every decision is written to moderation_actions and the audit log, and the people affected are notified in real time.</text>
+    <text class="x" x="40" y="550">Reporters are never revealed to the author. Thresholds, the provider and blocked terms are admin settings.</text>
+  </g>
+</svg>

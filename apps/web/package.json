@@ -1,0 +1,50 @@
+{
+  "name": "@open-social/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The social network web app: feed, communities, messaging, events, Q&A, moderation desk and admin.",
+  "scripts": {
+    "dev": "next dev -p 3510",
+    "build": "next build",
+    "start": "next start -p 3510",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@hookform/resolvers": "^5.9.2",
+    "@open-social/api-client": "workspace:^",
+    "@open-social/types": "workspace:^",
+    "@open-social/ui": "workspace:^",
+    "@tanstack/react-query": "^5.104.5",
+    "lucide-react": "^1.61.0",
+    "next": "15.5.28",
+    "qrcode": "^1.5.4",
+    "react": "19.1.10",
+    "react-dom": "19.1.10",
+    "react-hook-form": "^7",
+    "zod": "^3.25.76",
+    "zustand": "^5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@testing-library/jest-dom": "^6",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@types/node": "^22",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5.2.0",
+    "autoprefixer": "^10.6.1",
+    "eslint": "^9.39.1",
+    "eslint-config-next": "15.5.28",
+    "jsdom": "^25",
+    "postcss": "^8.5.31",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12",
+    "vitest": "^4.1.12"
+  }
+}

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="620" viewBox="0 0 1280 620" role="img" aria-labelledby="t d">
+  <title id="t">Real-time delivery of a direct message</title>
+  <desc id="d">Alice's message is written to Postgres in a transaction. After commit, the API emits to Bob's user room through the Redis adapter, which reaches Bob's sockets on any API task. Background jobs emit through the Redis emitter the same way.</desc>
+  <style>
+    .t { font-family: Inter, -apple-system, Segoe UI, Helvetica, Arial, sans-serif; }
+    .m { font-family: JetBrains Mono, SFMono-Regular, Menlo, monospace; }
+    .h { font-size: 16px; font-weight: 650; fill: #edf1ff; }
+    .s { font-size: 13px; fill: #97a3c2; }
+    .x { font-size: 12px; fill: #6f7b9c; }
+    .box { fill: #111833; stroke: #283258; stroke-width: 1.2; }
+    .hot { fill: #111d3d; stroke: #5b8cff; stroke-opacity: 0.6; stroke-width: 1.4; }
+    .bad { fill: #2a1420; stroke: #f87171; stroke-opacity: 0.55; stroke-width: 1.3; }
+    .ok { fill: #0f2421; stroke: #34d399; stroke-opacity: 0.5; stroke-width: 1.3; }
+    .warn { fill: #2a2312; stroke: #fbbf24; stroke-opacity: 0.55; stroke-width: 1.3; }
+    .arrow { stroke: #4b5778; stroke-width: 1.6; fill: none; marker-end: url(#a); }
+    .arrowhot { stroke: #5b8cff; stroke-opacity: 0.85; stroke-width: 1.6; fill: none; marker-end: url(#ah); }
+    .life { stroke: #283258; stroke-width: 1.2; stroke-dasharray: 4 6; }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4b5778"/></marker>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5b8cff"/></marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity="0.03"/></pattern>
+  </defs>
+  <rect width="1280" height="620" rx="16" fill="#0a0f1c"/>
+  <rect width="1280" height="620" rx="16" fill="url(#grid)"/>
+  <g class="t">
+    <text class="h" x="40" y="52" style="font-size:22px">A message, from send to screen</text>
+    <text class="s" x="40" y="76">Writes go through HTTP; delivery goes through sockets, only after the transaction commits, and never across a block.</text>
+
+    <rect class="box" x="40" y="130" width="200" height="96" rx="12"/>
+    <text class="h" x="60" y="164">Alice (browser)</text>
+    <text class="m x" x="60" y="190">POST /api/dms/threads</text>
+    <text class="m x" x="60" y="208">  /:id/messages</text>
+
+    <rect class="hot" x="310" y="110" width="300" height="196" rx="12"/>
+    <text class="h" x="330" y="144">API task A</text>
+    <text class="s" x="330" y="170">1  canMessage(): shared community,</text>
+    <text class="s" x="330" y="190">    no block, privacy, request cap</text>
+    <text class="s" x="330" y="214">2  BEGIN; insert message; COMMIT</text>
+    <text class="s" x="330" y="238">3  effects.flush() after commit:</text>
+    <text class="m x" x="346" y="260">emit user:bob  "dm:message"</text>
+    <text class="m x" x="346" y="280">job  moderation.scan</text>
+
+    <rect class="box" x="680" y="130" width="230" height="76" rx="12"/>
+    <text class="h" x="700" y="162">PostgreSQL</text>
+    <text class="s" x="700" y="186">dm_messages, read cursors</text>
+
+    <rect class="hot" x="530" y="360" width="300" height="96" rx="12"/>
+    <text class="h" x="550" y="394">Redis</text>
+    <text class="s" x="550" y="418">Socket.IO adapter pub/sub,</text>
+    <text class="s" x="550" y="438">presence, BullMQ queues</text>
+
+    <rect class="box" x="960" y="250" width="270" height="110" rx="12"/>
+    <text class="h" x="980" y="284">API task B</text>
+    <text class="s" x="980" y="308">holds Bob's sockets in</text>
+    <text class="m x" x="980" y="330">room user:bob</text>
+
+    <rect class="box" x="960" y="430" width="270" height="96" rx="12"/>
+    <text class="h" x="980" y="464">Bob (browser, 2 tabs)</text>
+    <text class="s" x="980" y="488">message appears, unread badge,</text>
+    <text class="s" x="980" y="506">"Seen" when he reads it</text>
+
+    <rect class="box" x="40" y="430" width="300" height="96" rx="12"/>
+    <text class="h" x="60" y="464">worker</text>
+    <text class="s" x="60" y="488">moderation hides a message:</text>
+    <text class="s" x="60" y="506">emits "dm:message:deleted" via the emitter</text>
+
+    <path class="arrowhot" d="M240 178 H306"/>
+    <path class="arrow" d="M610 168 H676"/>
+    <path class="arrowhot" d="M560 306 C560 330 600 340 620 356"/>
+    <path class="arrowhot" d="M830 390 C900 390 900 320 956 320"/>
+    <path class="arrowhot" d="M1095 360 V426"/>
+    <path class="arrow" d="M340 478 C430 478 470 430 526 420"/>
+
+    <text class="x" x="40" y="584">Rooms: user:&lt;id&gt; (every socket of a user), thread:&lt;id&gt; (typing), chat:&lt;community&gt;, community:&lt;id&gt;, post:&lt;id&gt;. Joining any room is authorised on the server.</text>
+  </g>
+</svg>

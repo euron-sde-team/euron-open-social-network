@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="740" viewBox="0 0 1280 740" role="img" aria-labelledby="t d">
+  <title id="t">Euron Open Social architecture</title>
+  <desc id="d">Browsers reach one host through CloudFront and an application load balancer. Page requests go to the web service; /api and /socket.io go to the API service. The API and the worker share PostgreSQL, Redis, S3, SES, KMS and Secrets Manager; the worker calls the moderation provider.</desc>
+  <style>
+    .t { font-family: Inter, -apple-system, Segoe UI, Helvetica, Arial, sans-serif; }
+    .m { font-family: JetBrains Mono, SFMono-Regular, Menlo, monospace; }
+    .h { font-size: 17px; font-weight: 650; fill: #edf1ff; }
+    .s { font-size: 13px; fill: #97a3c2; }
+    .x { font-size: 12px; fill: #6f7b9c; }
+    .box { fill: #111833; stroke: #283258; stroke-width: 1.2; }
+    .hot { fill: #111d3d; stroke: #5b8cff; stroke-opacity: 0.6; stroke-width: 1.4; }
+    .aws { fill: #141a28; stroke: #34405c; stroke-width: 1.2; }
+    .zone { fill: none; stroke: #283258; stroke-dasharray: 5 6; stroke-width: 1.2; }
+    .arrow { stroke: #4b5778; stroke-width: 1.6; fill: none; marker-end: url(#a); }
+    .arrowhot { stroke: #5b8cff; stroke-opacity: 0.85; stroke-width: 1.6; fill: none; marker-end: url(#ah); }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4b5778"/></marker>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5b8cff"/></marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity="0.03"/></pattern>
+  </defs>
+  <rect width="1280" height="740" rx="16" fill="#0a0f1c"/>
+  <rect width="1280" height="740" rx="16" fill="url(#grid)"/>
+
+  <g class="t">
+    <text class="h" x="40" y="52" style="font-size:22px">How the pieces fit</text>
+    <text class="s" x="40" y="76">One host for the browser: pages, the REST API and the websocket share an origin, so the session cookie stays first-party.</text>
+
+    <!-- People -->
+    <rect class="box" x="40" y="130" width="200" height="92" rx="12"/>
+    <text class="h" x="60" y="164">Members</text>
+    <text class="s" x="60" y="188">feed, communities,</text>
+    <text class="s" x="60" y="206">messages, events</text>
+
+    <rect class="box" x="40" y="246" width="200" height="92" rx="12"/>
+    <text class="h" x="60" y="280">Moderators, admins</text>
+    <text class="s" x="60" y="304">moderation desk,</text>
+    <text class="s" x="60" y="322">settings, audit</text>
+
+    <!-- Edge -->
+    <rect class="aws" x="300" y="150" width="190" height="168" rx="12"/>
+    <text class="h" x="320" y="186">CloudFront</text>
+    <text class="s" x="320" y="208">+ WAF (prod)</text>
+    <text class="h" x="320" y="250">Load balancer</text>
+    <text class="s" x="320" y="272">TLS, host + path rules</text>
+    <text class="s" x="320" y="292">sticky api target</text>
+    <path class="arrow" d="M240 176 H296"/>
+    <path class="arrow" d="M240 292 H296"/>
+
+    <!-- Services -->
+    <rect class="zone" x="540" y="104" width="330" height="430" rx="14"/>
+    <text class="x" x="556" y="126">ECS Fargate, private subnets</text>
+
+    <rect class="box" x="560" y="140" width="290" height="88" rx="12"/>
+    <text class="h" x="580" y="174">web</text>
+    <text class="s" x="580" y="196">Next.js 15, every page</text>
+    <text class="m x" x="580" y="215">/  (default rule)</text>
+
+    <rect class="hot" x="560" y="250" width="290" height="132" rx="12"/>
+    <text class="h" x="580" y="284">api</text>
+    <text class="s" x="580" y="306">Express REST + Socket.IO gateway</text>
+    <text class="s" x="580" y="326">auth, rules, after-commit effects</text>
+    <text class="m x" x="580" y="350">/api/*  /socket.io/*  /up</text>
+    <text class="x" x="580" y="368">2 to 10 tasks, scales on CPU</text>
+
+    <rect class="box" x="560" y="404" width="290" height="110" rx="12"/>
+    <text class="h" x="580" y="438">worker</text>
+    <text class="s" x="580" y="460">BullMQ: moderation scans, media</text>
+    <text class="s" x="580" y="478">processing, digests, maintenance</text>
+    <text class="x" x="580" y="500">same image, node dist/worker.js</text>
+
+    <path class="arrow" d="M490 210 C520 210 530 184 556 184"/>
+    <path class="arrowhot" d="M490 260 C520 260 530 316 556 316"/>
+
+    <!-- Data -->
+    <rect class="aws" x="930" y="120" width="310" height="76" rx="12"/>
+    <text class="h" x="950" y="152">PostgreSQL 16 (RDS)</text>
+    <text class="s" x="950" y="176">every record, keyset indexes, search</text>
+
+    <rect class="hot" x="930" y="212" width="310" height="76" rx="12"/>
+    <text class="h" x="950" y="244">Redis 7 (ElastiCache)</text>
+    <text class="s" x="950" y="268">socket fan-out, queues, presence, limits</text>
+
+    <rect class="aws" x="930" y="304" width="310" height="76" rx="12"/>
+    <text class="h" x="950" y="336">S3 media bucket</text>
+    <text class="s" x="950" y="360">private, SSE-KMS, presigned PUT/GET</text>
+
+    <rect class="aws" x="930" y="396" width="148" height="76" rx="12"/>
+    <text class="h" x="948" y="428">SES</text>
+    <text class="s" x="948" y="452">verify, digests</text>
+
+    <rect class="aws" x="1092" y="396" width="148" height="76" rx="12"/>
+    <text class="h" x="1110" y="428">KMS, Secrets</text>
+    <text class="s" x="1110" y="452">keys, JWT, Redis</text>
+
+    <rect class="box" x="930" y="488" width="310" height="76" rx="12"/>
+    <text class="h" x="950" y="520">Moderation provider</text>
+    <text class="s" x="950" y="544">OpenAI, keyword rules, or a stub</text>
+
+    <path class="arrow" d="M850 290 C890 290 890 158 926 158"/>
+    <path class="arrowhot" d="M850 316 C890 316 890 250 926 250"/>
+    <path class="arrow" d="M850 340 H926"/>
+    <path class="arrow" d="M850 460 C890 460 890 250 926 250"/>
+    <path class="arrow" d="M850 480 C890 480 890 434 926 434"/>
+    <path class="arrow" d="M850 500 C890 500 890 526 926 526"/>
+
+    <!-- Browser to S3 directly -->
+    <path class="arrow" d="M140 338 C140 640 760 640 1080 640 C1160 640 1160 400 1150 384" stroke-dasharray="5 5"/>
+    <text class="s" x="420" y="628">the browser uploads and downloads media straight from S3 with short-lived signed URLs</text>
+
+    <text class="x" x="40" y="704">Locally the same containers run under Docker Compose; Floci emulates S3, SES, KMS and Secrets Manager, provisioned by the same Terraform.</text>
+  </g>
+</svg>
